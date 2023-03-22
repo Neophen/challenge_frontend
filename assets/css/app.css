@@ -1,0 +1,65 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Remove auto icon for safari */
+
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  margin: 0;
+}
+
+/* Remove the inner padding and cancel buttons in Chrome and Safari on macOS. */
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+  appearance: none;
+}
+
+/* Remove the grey background that appear on click on button on iOS */
+* {
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
+}
+
+/* Force the style of date input on various browser */
+[type="date"]::-webkit-datetime-edit {
+  padding: 0;
+}
+
+[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  background: transparent;
+}
+
+[type="date"]::-webkit-datetime-edit-text {
+  color: #7a7387;
+  padding: 0 5px;
+}
+
+[type="date"]::-webkit-datetime-edit-month-field {
+  color: #7a7387;
+}
+
+[type="date"]::-webkit-datetime-edit-day-field {
+  color: #7a7387;
+}
+
+[type="date"]::-webkit-datetime-edit-year-field {
+  color: #7a7387;
+}
+
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+}
+
+[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  color: #150a2d;
+}
