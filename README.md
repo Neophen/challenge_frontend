@@ -1,5 +1,3 @@
--
-
 # Goal
 
 UX wants an excellent select component that can be used for any selection like attributes(brand, colour), categories etc.
