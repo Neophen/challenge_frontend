@@ -15,6 +15,12 @@ module.exports = {
       lg: "1200px",
     },
     extend: {
+      data: {
+        true: "value=true",
+      },
+      animation: {
+        label: "label 200ms ease-in-out",
+      },
       colors: {
         background: "#f7f7f7",
         error: "#f01a26",
@@ -45,6 +51,12 @@ module.exports = {
           600: "#909ef0",
           800: "#576ae5",
         },
+      },
+      fontFamily: {
+        sans: ["Raleway", ...defaultTheme.fontFamily.sans],
+      },
+      dropShadow: {
+        sm: "0 1px 5px rgba(0, 0, 0, 0.25)",
       },
     },
   },

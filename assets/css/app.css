@@ -2,6 +2,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+:root {
+  font-variation-settings: "wght" var(--text-axis);
+}
+
 /* Remove auto icon for safari */
 
 input::-webkit-contacts-auto-fill-button,
@@ -62,4 +66,35 @@ input::-webkit-credentials-auto-fill-button {
 [type="date"]::-webkit-date-and-time-value {
   text-align: left;
   color: #150a2d;
+}
+
+@keyframes label {
+  0% {
+    font-variation-settings: "wght" 100;
+  }
+  100% {
+    font-variation-settings: "wght" 700;
+  }
+}
+
+.scroll-shadows {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+
+  background:
+    /* Shadow Cover TOP */ linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      )
+      center top,
+    /* Shadow Cover BOTTOM */ linear-gradient(rgba(255, 255, 255, 0), white 70%)
+      center bottom,
+    /* Shadow TOP */
+      linear-gradient(180deg, rgba(0, 0, 0, 0.25), transparent 50%) center top,
+    /* Shadow BOTTOM */
+      linear-gradient(0deg, rgba(0, 0, 0, 0.25), transparent 50%) center bottom;
+
+  background-repeat: no-repeat;
+  background-size: 100% 40px, 100% 40px, 100% 24px, 100% 24px;
+  background-attachment: local, local, scroll, scroll;
 }
