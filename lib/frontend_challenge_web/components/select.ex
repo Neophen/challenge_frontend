@@ -42,16 +42,16 @@ defmodule FrontendChallengeWeb.Components.Select do
       type="button"
       id={"#{@field.id}-trigger"}
       phx-click={show_content(@field.id)}
-      data-value={has_value(@field.value)}
+      data-value={not empty?(@field.value)}
       class="group block w-full rounded-lg border border-grey-400 bg-white py-3 px-4 text-left hover:border-lavender-600 focus:outline-none focus-visible:border-lavender-600"
     >
       <div class={[
         "max-w-max font-sans text-grey-500 transition group-hover:text-lavender-800 group-focus:text-lavender-800",
-        "group-data-true:animate-label group-data-true:absolute group-data-true:-translate-y-5 group-data-true:bg-white group-data-true:px-1 group-data-true:text-xs group-data-true:font-bold"
+        "group-data-value:animate-label group-data-value:absolute group-data-value:-translate-y-5 group-data-value:bg-white group-data-value:px-1 group-data-value:text-xs group-data-value:font-bold"
       ]}>
         <%= @title %>
       </div>
-      <div id={"#{@field.id}-trigger-value"} class="hidden group-data-true:block">
+      <div id={"#{@field.id}-trigger-value"} class="hidden group-data-value:block">
         <%= get_option_label(@field.value, @data) %>
       </div>
     </button>
@@ -89,9 +89,11 @@ defmodule FrontendChallengeWeb.Components.Select do
         </h1>
       </div>
 
-      <ul class="overflow-y-scroll grow divide-y divide-grey-200 scroll-shadows">
-        <.select_option :for={option <- @data} field={@field} option={option} />
-      </ul>
+      <.scrollable_area class="grow">
+        <ul class="divide-y divide-grey-200">
+          <.select_option :for={option <- @data} field={@field} option={option} />
+        </ul>
+      </.scrollable_area>
     </div>
     """
   end
@@ -105,19 +107,42 @@ defmodule FrontendChallengeWeb.Components.Select do
       <button
         type="button"
         class={[
-          "group flex w-full items-center p-4 text-left text-grey-800 hover:bg-grey-100 focus:outline-none focus-visible:bg-grey-100",
-          "data-[selected]:bg-lavender-100"
+          "group/option flex w-full items-center p-4 text-left text-grey-800 focus:outline-none hover:bg-grey-100 focus-visible:bg-grey-100",
+          "data-selected:bg-lavender-100"
         ]}
-        phx-click={on_select_option(@field.id, @option)}
-        data-selected={is_selected?(@field.value, @option.value)}
+        phx-click={select_this_option(@field.id, @option)}
+        data-selected={selected?(@field.value, @option.value)}
         data-id={@option.value}
       >
         <span class="flex-1 truncate">
           <%= @option.label %>
         </span>
-        <p class="hidden group-data-[selected]:block">V</p>
+        <p class="hidden group-data-selected/option:block">V</p>
       </button>
     </li>
+    """
+  end
+
+  attr :class, :string,
+    required: true,
+    doc: "Must provide a height, or something that will cause the overflow"
+
+  slot :inner_block, required: true
+
+  defp scrollable_area(assigns) do
+    ~H"""
+    <ul
+      phx-mounted={JS.dispatch("add-scroll-area")}
+      phx-remove={JS.dispatch("remove-scroll-area")}
+      class={[
+        "scrollable-area overflow-y-scroll relative overscroll-contain",
+        @class
+      ]}
+    >
+      <div class="sticky inset-x-0 -top-1 transition-opacity opacity-0 h-1 bg-white z-10"></div>
+      <%= render_slot(@inner_block) %>
+      <div class="sticky inset-x-0 -bottom-1 transition-opacity opacity-0 h-1 bg-white z-10"></div>
+    </ul>
     """
   end
 
@@ -135,7 +160,7 @@ defmodule FrontendChallengeWeb.Components.Select do
     |> JS.add_class("scale-y-0", to: get_dropdown_id(id))
   end
 
-  defp on_select_option(js \\ %JS{}, id, option) do
+  defp select_this_option(js \\ %JS{}, id, option) do
     js
     |> hide_content(id)
     |> JS.dispatch("select_option", detail: %{field_id: id, option: option})
@@ -154,13 +179,13 @@ defmodule FrontendChallengeWeb.Components.Select do
     Enum.find(items, fn item -> to_string(item.value) == to_string(value) end)
   end
 
-  defp is_selected?(value, _option) when is_nil(value), do: false
+  defp selected?(value, _option) when is_nil(value), do: false
 
-  defp is_selected?(value, option) do
+  defp selected?(value, option) do
     to_string(value) === to_string(option)
   end
 
-  defp has_value(value) when is_nil(value), do: "false"
-  defp has_value(_value = ""), do: "false"
-  defp has_value(_value), do: "true"
+  defp empty?(nil), do: true
+  defp empty?(""), do: true
+  defp empty?(_), do: false
 end

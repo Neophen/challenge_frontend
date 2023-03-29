@@ -3,7 +3,7 @@ window.addEventListener("select_option", (e) => {
   let input = document.querySelector(`#${field_id}`);
   if (input) {
     input.value = option.value;
-    input.dispatchEvent(new Event("change", { bubbles: true }));
+    input.dispatchEvent(new Event("input", { bubbles: true }));
   }
   let clickedOption = e.target;
   let inputId = `#${field_id}`;
@@ -11,12 +11,12 @@ window.addEventListener("select_option", (e) => {
   let trigger = document.querySelector(`${inputId}-trigger`);
   let triggerValue = document.querySelector(`${inputId}-trigger-value`);
 
-  let currentOption = container.querySelector("[data-selected='true']");
+  let currentOption = container.querySelector("[data-selected]");
   let selectingSelectedOption =
     !!currentOption && currentOption === clickedOption;
 
   if (trigger) {
-    trigger.dataset.value = true;
+    trigger.dataset.value = option.value;
   }
 
   if (triggerValue) {
@@ -24,10 +24,10 @@ window.addEventListener("select_option", (e) => {
   }
 
   if (currentOption) {
-    currentOption.dataset.selected = false;
+    currentOption.dataset.selected = undefined;
   }
 
   if (!selectingSelectedOption) {
-    clickedOption.dataset.selected = true;
+    clickedOption.dataset.selected = "";
   }
 });

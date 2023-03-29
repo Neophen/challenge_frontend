@@ -16,7 +16,8 @@ module.exports = {
     },
     extend: {
       data: {
-        true: "value=true",
+        value: "value",
+        selected: "selected",
       },
       animation: {
         label: "label 200ms ease-in-out",

@@ -49,6 +49,7 @@ defmodule FrontendChallenge.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
+      {:tailwind_formatter, "~> 0.3.5", only: :dev, runtime: false},
       {:plug_cowboy, "~> 2.5"}
     ]
   end
